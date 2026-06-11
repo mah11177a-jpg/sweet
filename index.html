@@ -360,7 +360,6 @@
     <header>
         <div class="logo">RUAJ<span>.</span></div>
         <div class="nav-controls">
-            <!-- قائمة اختيار اللغات -->
             <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
                 <option value="ar">العربية</option>
                 <option value="es-CO">Español (Colombia)</option>
@@ -403,7 +402,6 @@
     </div>
 
     <script>
-        // ملف الترجمة اللغوية مع توحيد العملة لـ COP $
         const translations = {
             ar: {
                 dir: "rtl",
@@ -429,7 +427,8 @@
                     { id: 1, name: "تيشيرت ضاغط برو للتمارين" },
                     { id: 2, name: "بنطال رياضي مطاطي مريح" },
                     { id: 3, name: "سترة رياضية مقاومة للرياح" },
-                    { id: 4, name: "حذاء RUAJ الترا للياقة البدنية" }
+                    { id: 4, name: "حذاء RUAJ الترا للياقة البدنية" },
+                    { id: 5, name: "بنطال رياضي للأطفال (مموه/أحمر)" }
                 ]
             },
             "es-CO": {
@@ -456,7 +455,8 @@
                     { id: 1, name: "Camiseta de Compresión Pro" },
                     { id: 2, name: "Pantalón Deportivo Stretch" },
                     { id: 3, name: "Chaqueta Rompevientos Deportiva" },
-                    { id: 4, name: "Tenis RUAJ Ultra Fitness" }
+                    { id: 4, name: "Tenis RUAJ Ultra Fitness" },
+                    { id: 5, name: "Pantalón Deportivo para Niños" }
                 ]
             },
             en: {
@@ -483,18 +483,19 @@
                     { id: 1, name: "Pro Compression T-Shirt" },
                     { id: 2, name: "Comfort Stretch Joggers" },
                     { id: 3, name: "Windproof Sports Jacket" },
-                    { id: 4, name: "RUAJ Ultra Fitness Shoes" }
+                    { id: 4, name: "RUAJ Ultra Fitness Shoes" },
+                    { id: 5, name: "Kids Sports Joggers" }
                 ]
             }
         };
 
-        // تكوين المنتجات من حيث (الصور، المخزون، المقاسات، والأسعار الموحدة بالبيزو الكولومبي)
-        // لتغيير الصور الخاصة بكِ، استبدلي روابط الروابط أدناه بأسماء ملفات صوركِ (مثل "my-shirt.jpg")
+        // إعدادات المنتجات والمخزون، وتم تضمين منتجك الجديد هنا بالرقم 5
         const baseProductsConfig = {
             1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"] },
             2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"] },
             3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"] },
-            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"] }
+            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"] },
+            5: { price: 15000, image: "WhatsApp Image 2026-06-11 at 11.40.47 PM.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"] }
         };
 
         let currentLang = 'ar';
@@ -670,7 +671,6 @@
             displayProducts();
         }
 
-        // بدء التشغيل
         changeLanguage('ar');
     </script>
 </body>
