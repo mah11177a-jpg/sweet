@@ -418,18 +418,20 @@
                 btnOut: "نفدت الكمية",
                 currency: "COP$",
                 msgMax: "عذراً، لقد وصلت للحد الأقصى المتاح في المخزن لهذا المقاس.",
-                msgSuccess: "تم تحويلك إلى الواتساب لإرسال طلبك التجهيزي!",
+                msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
                 msgEmpty: "السلة فارغة حالياً!",
-                lblItemSize: "المقاس",
-                lblQty: "الكمية",
+                lblItemSize: "Talla",
+                lblQty: "Cant",
                 lblDelete: "حذف",
-                whatsappHeader: "🛍️ *طلب جديد من متجر RUAJ* 🛍️\n\n*المنتجات المطلوبة:*\n",
+                // تم تعديل الرسالة للغة الكولومبية هنا لتذهب للعميل جاهزة بالإسبانية
+                whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
+                lblTotalMsg: "Total a pagar:",
                 products: [
-                    { id: 1, name: "تيشيرت ضاغط برو للتمارين" },
-                    { id: 2, name: "بنطال رياضي مطاطي مريح" },
-                    { id: 3, name: "سترة رياضية مقاومة للرياح" },
-                    { id: 4, name: "حذاء RUAJ الترا للياقة البدنية" },
-                    { id: 5, name: "بنطال رياضي للأطفال (مموه/أحمر)" }
+                    { id: 1, name: "Camiseta de Compresión Pro" },
+                    { id: 2, name: "Pantalón Deportivo Stretch" },
+                    { id: 3, name: "Chaqueta Rompevientos Deportiva" },
+                    { id: 4, name: "Tenis RUAJ Ultra Fitness" },
+                    { id: 5, name: "Pantalón Deportivo para Niños" }
                 ]
             },
             "es-CO": {
@@ -452,7 +454,8 @@
                 lblItemSize: "Talla",
                 lblQty: "Cant",
                 lblDelete: "Eliminar",
-                whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ* 🛍️\n\n*Productos:*\n",
+                whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
+                lblTotalMsg: "Total a pagar:",
                 products: [
                     { id: 1, name: "Camiseta de Compresión Pro" },
                     { id: 2, name: "Pantalón Deportivo Stretch" },
@@ -481,7 +484,8 @@
                 lblItemSize: "Size",
                 lblQty: "Qty",
                 lblDelete: "Remove",
-                whatsappHeader: "🛍️ *New Order from RUAJ* 🛍️\n\n*Items:*\n",
+                whatsappHeader: "🛍️ *New Order from RUAJ Store* 🛍️\n\n*Items:*\n",
+                lblTotalMsg: "Grand Total:",
                 products: [
                     { id: 1, name: "Pro Compression T-Shirt" },
                     { id: 2, name: "Comfort Stretch Joggers" },
@@ -660,16 +664,17 @@
                 return;
             }
 
-            // تم وضع رقم هاتفكِ هنا بنجاح لفتح محادثتكِ مباشرة
+            // رقم هاتفك المعتمد
             const myPhoneNumber = "9647746855670"; 
 
             let messageText = t.whatsappHeader;
             let grandTotal = 0;
 
+            // بناء محتوى المنتجات المكتوبة كلياً بالإسبانية للعميل الكولومبي
             cart.forEach((item, index) => {
                 const itemTotal = item.price * item.quantity;
                 grandTotal += itemTotal;
-                messageText += `${index + 1}. *${item.name}*\n   - المقاس: ${item.size}\n   - الكمية: ${item.quantity}\n   - السعر: ${t.currency} ${itemTotal.toLocaleString()}\n\n`;
+                messageText += `${index + 1}. *${item.name}*\n   - Talla (المقاس): ${item.size}\n   - Cantidad (الكمية): ${item.quantity}\n   - Precio: ${t.currency} ${itemTotal.toLocaleString()}\n\n`;
                 
                 if (baseProductsConfig[item.id]) {
                     baseProductsConfig[item.id].stock -= item.quantity;
@@ -677,7 +682,7 @@
             });
 
             messageText += `---------------------------\n`;
-            messageText += `💰 *الإجمالي الكلي:* ${t.currency} ${grandTotal.toLocaleString()}`;
+            messageText += `💰 *${t.lblTotalMsg}* ${t.currency} ${grandTotal.toLocaleString()}`;
 
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(messageText)}`;
 
