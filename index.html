@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruaj | Sports Store</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #00ff66; 
+            --bg-dark: #0b0f19;      
+            --card-bg: #161f30;      
+            --text-light: #ffffff;
+            --text-gray: #a0aec0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* دعم الخطوط بناءً على الاتجاه */
+        [dir="rtl"] * { font-family: 'Cairo', sans-serif; }
+        [dir="ltr"] * { font-family: 'Poppins', sans-serif; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* الهيدر */
+        header {
+            background-color: rgba(22, 31, 48, 0.95);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .logo span { color: var(--primary-color); }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* قائمة اختيار اللغة */
+        .lang-select {
+            background-color: #1e293b;
+            color: white;
+            border: 1px solid #334155;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            outline: none;
+            font-weight: bold;
+        }
+
+        .cart-icon-container {
+            position: relative;
+            cursor: pointer;
+            background: #1e293b;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+
+        .cart-icon-container:hover {
+            background: var(--primary-color);
+            color: #000;
+        }
+
+        .cart-count {
+            background: #ff3366;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            position: absolute;
+            top: -5px;
+            font-weight: bold;
+        }
+        [dir="rtl"] .cart-count { right: -5px; }
+        [dir="ltr"] .cart-count { left: -5px; }
+
+        /* البانر الرئيسي */
+        .hero {
+            height: 50vh;
+            background: linear-gradient(rgba(11, 15, 25, 0.7), rgba(11, 15, 25, 0.9)), url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 span { color: var(--primary-color); }
+
+        .hero p {
+            color: var(--text-gray);
+            font-size: 18px;
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        /* شبكة المنتجات */
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 30px;
+            padding: 0 15px;
+        }
+        [dir="rtl"] .section-title { border-right: 5px solid var(--primary-color); }
+        [dir="ltr"] .section-title { border-left: 5px solid var(--primary-color); }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 102, 0.1);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .product-info { padding: 20px; }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            height: 50px;
+        }
+
+        .product-price {
+            color: var(--primary-color);
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .stock-status {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+        }
+
+        .size-selector { margin-bottom: 15px; }
+
+        .size-selector label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-bottom: 5px;
+        }
+
+        .sizes {
+            display: flex;
+            gap: 8px;
+        }
+
+        .size-btn {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .size-btn.active {
+            background: var(--primary-color);
+            color: #000;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .btn-add {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: #0b0f19;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn-add:disabled {
+            background-color: #334155;
+            color: var(--text-gray);
+            cursor: not-allowed;
+        }
+
+        /* سلة التسوق الجانبية */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            width: 400px;
+            height: 100%;
+            background-color: var(--card-bg);
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
+            z-index: 1000;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        [dir="rtl"] .cart-sidebar { left: -400px; }
+        [dir="rtl"] .cart-sidebar.open { left: 0; }
+        [dir="ltr"] .cart-sidebar { right: -400px; }
+        [dir="ltr"] .cart-sidebar.open { right: 0; }
+
+        .cart-header {
+            padding: 20px;
+            background-color: #1e293b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-cart {
+            font-size: 24px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 15px;
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info { flex: 1; }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff3366;
+            cursor: pointer;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            background-color: #1e293b;
+            border-top: 1px solid #334155;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background-color: #ff3366;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 999;
+        }
+
+        .overlay.active { display: block; }
+
+        @media (max-width: 450px) {
+            .cart-sidebar { width: 100%; }
+            [dir="rtl"] .cart-sidebar { left: -100%; }
+            [dir="ltr"] .cart-sidebar { right: -100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- الهيدر -->
+    <header>
+        <div class="logo">RUAJ<span>.</span></div>
+        <div class="nav-controls">
+            <!-- قائمة اختيار اللغات -->
+            <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="es-CO">Español (Colombia)</option>
+                <option value="en">English</option>
+            </select>
+            
+            <div class="cart-icon-container" onclick="toggleCart()">
+                <span id="lblCartBtn">🛒 السلة</span>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- البانر الرئيسي -->
+    <section class="hero">
+        <h1 id="lblHeroTitle">انطلق بقوة مع <span>RUAJ</span></h1>
+        <p id="lblHeroDesc">ملابس رياضية مصممة بأحدث التقنيات لتمنحك الأداء العالي والراحة المطلقة أثناء التمارين.</p>
+    </section>
+
+    <!-- قسم المنتجات -->
+    <main class="container">
+        <h2 class="section-title" id="lblSectionTitle">الأكثر مبيعاً</h2>
+        <div class="products-grid" id="productsContainer"></div>
+    </main>
+
+    <!-- نافذة السلة الجانبية -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3 id="lblCartHeader">سلة التسوق</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span id="lblTotalText">الإجمالي:</span>
+                <span id="cartTotal">COP$ 0</span>
+            </div>
+            <button class="btn-checkout" id="lblCheckoutBtn" onclick="checkout()">إتمام الطلب</button>
+        </div>
+    </div>
+
+    <script>
+        // ملف الترجمة اللغوية مع توحيد العملة لـ COP $
+        const translations = {
+            ar: {
+                dir: "rtl",
+                heroTitle: "انطلق بقوة مع <span>RUAJ</span>",
+                heroDesc: "ملابس رياضية مصممة بأحدث التقنيات لتمنحك الأداء العالي والراحة المطلقة أثناء التمارين.",
+                sectionTitle: "الأكثر مبيعاً",
+                cartBtn: "🛒 السلة",
+                cartHeader: "سلة التسوق",
+                totalText: "الإجمالي:",
+                checkoutBtn: "إتمام الطلب",
+                lblSize: "اختر المقاس:",
+                lblStock: "المتبقي في المخزن:",
+                btnAdd: "إضافة للسلة",
+                btnOut: "نفدت الكمية",
+                currency: "COP$",
+                msgMax: "عذراً، لقد وصلت للحد الأقصى المتاح في المخزن لهذا المقاس.",
+                msgSuccess: "شكراً لتسوقك من Ruaj! تم تسجيل طلبك بنجاح.",
+                msgEmpty: "السلة فارغة حالياً!",
+                lblItemSize: "المقاس",
+                lblQty: "الكمية",
+                lblDelete: "حذف",
+                products: [
+                    { id: 1, name: "تيشيرت ضاغط برو للتمارين" },
+                    { id: 2, name: "بنطال رياضي مطاطي مريح" },
+                    { id: 3, name: "سترة رياضية مقاومة للرياح" },
+                    { id: 4, name: "حذاء RUAJ الترا للياقة البدنية" }
+                ]
+            },
+            "es-CO": {
+                dir: "ltr",
+                heroTitle: "Entrena con poder con <span>RUAJ</span>",
+                heroDesc: "Ropa deportiva diseñada con la última tecnología para brindarte un alto rendimiento y comodidad absoluta.",
+                sectionTitle: "Los Más Vendidos",
+                cartBtn: "🛒 Carrito",
+                cartHeader: "Tu Carrito",
+                totalText: "Total:",
+                checkoutBtn: "Finalizar Pedido",
+                lblSize: "Seleccionar Talla:",
+                lblStock: "Disponibles en stock:",
+                btnAdd: "Añadir al carrito",
+                btnOut: "Agotado",
+                currency: "COP$",
+                msgMax: "Lo sentimos, has alcanzado el límite máximo disponible en stock para esta talla.",
+                msgSuccess: "¡Gracias por comprar en Ruaj! Tu pedido ha sido registrado con éxito.",
+                msgEmpty: "¡El carrito está vacío!",
+                lblItemSize: "Talla",
+                lblQty: "Cant",
+                lblDelete: "Eliminar",
+                products: [
+                    { id: 1, name: "Camiseta de Compresión Pro" },
+                    { id: 2, name: "Pantalón Deportivo Stretch" },
+                    { id: 3, name: "Chaqueta Rompevientos Deportiva" },
+                    { id: 4, name: "Tenis RUAJ Ultra Fitness" }
+                ]
+            },
+            en: {
+                dir: "ltr",
+                heroTitle: "Move with Power with <span>RUAJ</span>",
+                heroDesc: "Sportswear designed with the latest technology to give you high performance and absolute comfort.",
+                sectionTitle: "Best Sellers",
+                cartBtn: "🛒 Cart",
+                cartHeader: "Shopping Cart",
+                totalText: "Total:",
+                checkoutBtn: "Checkout",
+                lblSize: "Select Size:",
+                lblStock: "In Stock:",
+                btnAdd: "Add to Cart",
+                btnOut: "Out of Stock",
+                currency: "COP$",
+                msgMax: "Sorry, you have reached the maximum stock limit for this size.",
+                msgSuccess: "Thank you for shopping at Ruaj! Your order has been placed.",
+                msgEmpty: "Your cart is empty!",
+                lblItemSize: "Size",
+                lblQty: "Qty",
+                lblDelete: "Remove",
+                products: [
+                    { id: 1, name: "Pro Compression T-Shirt" },
+                    { id: 2, name: "Comfort Stretch Joggers" },
+                    { id: 3, name: "Windproof Sports Jacket" },
+                    { id: 4, name: "RUAJ Ultra Fitness Shoes" }
+                ]
+            }
+        };
+
+        // تكوين المنتجات من حيث (الصور، المخزون، المقاسات، والأسعار الموحدة بالبيزو الكولومبي)
+        // لتغيير الصور الخاصة بكِ، استبدلي روابط الروابط أدناه بأسماء ملفات صوركِ (مثل "my-shirt.jpg")
+        const baseProductsConfig = {
+            1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"] },
+            2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"] },
+            3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"] },
+            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"] }
+        };
+
+        let currentLang = 'ar';
+        let cart = [];
+        let selectedSizes = {};
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            const htmlTag = document.getElementById('htmlTag');
+            htmlTag.setAttribute('dir', t.dir);
+            htmlTag.setAttribute('lang', lang);
+
+            document.getElementById('lblHeroTitle').innerHTML = t.heroTitle;
+            document.getElementById('lblHeroDesc').innerText = t.heroDesc;
+            document.getElementById('lblSectionTitle').innerText = t.sectionTitle;
+            document.getElementById('lblCartBtn').innerText = t.cartBtn;
+            document.getElementById('lblCartHeader').innerText = t.cartHeader;
+            document.getElementById('lblTotalText').innerText = t.totalText;
+            document.getElementById('lblCheckoutBtn').innerText = t.checkoutBtn;
+
+            displayProducts();
+            updateCartUI(); 
+        }
+
+        function getCurrentProducts() {
+            return translations[currentLang].products.map(p => {
+                return {
+                    ...p,
+                    ...baseProductsConfig[p.id]
+                };
+            });
+        }
+
+        function displayProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+            const currentProducts = getCurrentProducts();
+            const t = translations[currentLang];
+
+            currentProducts.forEach(product => {
+                if (!selectedSizes[product.id]) {
+                    selectedSizes[product.id] = product.sizes[0];
+                }
+
+                const isOutOfStock = product.stock === 0;
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" class="product-img">
+                    <div class="product-info">
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-price">${t.currency} ${product.price.toLocaleString()}</div>
+                        <div class="stock-status">${t.lblStock} ${product.stock}</div>
+                        
+                        <div class="size-selector">
+                            <label>${t.lblSize}</label>
+                            <div class="sizes">
+                                ${product.sizes.map(size => `
+                                    <button class="size-btn ${selectedSizes[product.id] === size ? 'active' : ''}" 
+                                        onclick="selectSize(${product.id}, '${size}')">
+                                        ${size}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <button class="btn-add" ${isOutOfStock ? 'disabled' : ''} onclick="addToCart(${product.id})">
+                            ${isOutOfStock ? t.btnOut : t.btnAdd}
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectSize(productId, size) {
+            selectedSizes[productId] = size;
+            displayProducts();
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function addToCart(productId) {
+            const currentProducts = getCurrentProducts();
+            const product = currentProducts.find(p => p.id === productId);
+            const size = selectedSizes[productId];
+            const t = translations[currentLang];
+
+            if (product && product.stock > 0) {
+                const existingItem = cart.find(item => item.id === productId && item.size === size);
+
+                if (existingItem) {
+                    if (existingItem.quantity < product.stock) {
+                        existingItem.quantity++;
+                    } else {
+                        alert(t.msgMax);
+                        return;
+                    }
+                } else {
+                    cart.push({
+                        id: product.id,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image,
+                        size: size,
+                        quantity: 1
+                    });
+                }
+                updateCartUI();
+            }
+        }
+
+        function removeFromCart(productId, size) {
+            cart = cart.filter(item => !(item.id === productId && item.size === size));
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            const t = translations[currentLang];
+
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+                totalItems += item.quantity;
+
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item';
+                itemElement.innerHTML = `
+                    <img src="${item.image}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.name}</div>
+                        <div class="cart-item-meta">${t.lblItemSize}: ${item.size} | ${t.lblQty}: ${item.quantity}</div>
+                        <div class="cart-item-price">${t.currency} ${(item.price * item.quantity).toLocaleString()}</div>
+                    </div>
+                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}')">${t.lblDelete}</button>
+                `;
+                cartItemsContainer.appendChild(itemElement);
+            });
+
+            cartCount.innerText = totalItems;
+            cartTotal.innerText = `${t.currency} ${total.toLocaleString()}`;
+        }
+
+        function checkout() {
+            const t = translations[currentLang];
+            if (cart.length === 0) {
+                alert(t.msgEmpty);
+                return;
+            }
+
+            cart.forEach(cartItem => {
+                if (baseProductsConfig[cartItem.id]) {
+                    baseProductsConfig[cartItem.id].stock -= cartItem.quantity;
+                }
+            });
+
+            alert(t.msgSuccess);
+            cart = [];
+            updateCartUI();
+            toggleCart();
+            displayProducts();
+        }
+
+        // بدء التشغيل
+        changeLanguage('ar');
+    </script>
+</body>
+</html>
