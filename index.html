@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruaj | Sports Store</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -356,7 +355,6 @@
 
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
-    <!-- الهيدر -->
     <header>
         <div class="logo">RUAJ<span>.</span></div>
         <div class="nav-controls">
@@ -373,19 +371,16 @@
         </div>
     </header>
 
-    <!-- البانر الرئيسي -->
     <section class="hero">
         <h1 id="lblHeroTitle">انطلق بقوة مع <span>RUAJ</span></h1>
         <p id="lblHeroDesc">ملابس رياضية مصممة بأحدث التقنيات لتمنحك الأداء العالي والراحة المطلقة أثناء التمارين.</p>
     </section>
 
-    <!-- قسم المنتجات -->
     <main class="container">
         <h2 class="section-title" id="lblSectionTitle">الأكثر مبيعاً</h2>
         <div class="products-grid" id="productsContainer"></div>
     </main>
 
-    <!-- نافذة السلة الجانبية -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3 id="lblCartHeader">سلة التسوق</h3>
@@ -489,13 +484,13 @@
             }
         };
 
-        // إعدادات المنتجات والمخزون، وتم تضمين منتجك الجديد هنا بالرقم 5
+        // تم استبدال رابط الصورة رقم 5 برابط المستودع المباشر الخاص بكِ
         const baseProductsConfig = {
             1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"] },
             2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"] },
             3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"] },
             4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"] },
-            5: { price: 15000, image: "WhatsApp Image 2026-06-11 at 11.40.47 PM.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"] }
+            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/WhatsApp%20Image%202026-06-11%20at%2011.40.47%20PM.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"] }
         };
 
         let currentLang = 'ar';
