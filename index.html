@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=300;400;700;900&family=Poppins:wght=300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -246,7 +246,7 @@
             width: 400px;
             height: 100%;
             background-color: var(--card-bg);
-            box-shadow: 0 0 25 rgba(0,0,0,0.5);
+            box-shadow: 0 0 25px rgba(0,0,0,0.5);
             z-index: 1000;
             transition: all 0.4s ease;
             display: flex;
@@ -411,18 +411,19 @@
                 cartBtn: "🛒 السلة",
                 cartHeader: "سلة التسوق",
                 totalText: "الإجمالي:",
-                checkoutBtn: "إتمام الطلب",
+                checkoutBtn: "إتمام الطلب عبر الواتساب",
                 lblSize: "اختر المقاس:",
                 lblStock: "المتبقي في المخزن:",
                 btnAdd: "إضافة للسلة",
                 btnOut: "نفدت الكمية",
                 currency: "COP$",
                 msgMax: "عذراً، لقد وصلت للحد الأقصى المتاح في المخزن لهذا المقاس.",
-                msgSuccess: "شكراً لتسوقك من Ruaj! تم تسجيل طلبك بنجاح.",
+                msgSuccess: "تم تحويلك إلى الواتساب لإرسال طلبك التجهيزي!",
                 msgEmpty: "السلة فارغة حالياً!",
                 lblItemSize: "المقاس",
                 lblQty: "الكمية",
                 lblDelete: "حذف",
+                whatsappHeader: "🛍️ *طلب جديد من متجر RUAJ* 🛍️\n\n*المنتجات المطلوبة:*\n",
                 products: [
                     { id: 1, name: "تيشيرت ضاغط برو للتمارين" },
                     { id: 2, name: "بنطال رياضي مطاطي مريح" },
@@ -439,18 +440,19 @@
                 cartBtn: "🛒 Carrito",
                 cartHeader: "Tu Carrito",
                 totalText: "Total:",
-                checkoutBtn: "Finalizar Pedido",
+                checkoutBtn: "Pedir por WhatsApp",
                 lblSize: "Seleccionar Talla:",
                 lblStock: "Disponibles en stock:",
                 btnAdd: "Añadir al carrito",
                 btnOut: "Agotado",
                 currency: "COP$",
                 msgMax: "Lo sentimos, has alcanzado el límite máximo disponible en stock para esta talla.",
-                msgSuccess: "¡Gracias por comprar en Ruaj! Tu pedido ha sido registrado con éxito.",
+                msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
                 msgEmpty: "¡El carrito está vacío!",
                 lblItemSize: "Talla",
                 lblQty: "Cant",
                 lblDelete: "Eliminar",
+                whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ* 🛍️\n\n*Productos:*\n",
                 products: [
                     { id: 1, name: "Camiseta de Compresión Pro" },
                     { id: 2, name: "Pantalón Deportivo Stretch" },
@@ -467,18 +469,19 @@
                 cartBtn: "🛒 Cart",
                 cartHeader: "Shopping Cart",
                 totalText: "Total:",
-                checkoutBtn: "Checkout",
+                checkoutBtn: "Order via WhatsApp",
                 lblSize: "Select Size:",
                 lblStock: "In Stock:",
                 btnAdd: "Add to Cart",
                 btnOut: "Out of Stock",
                 currency: "COP$",
                 msgMax: "Sorry, you have reached the maximum stock limit for this size.",
-                msgSuccess: "Thank you for shopping at Ruaj! Your order has been placed.",
+                msgSuccess: "Redirecting to WhatsApp to send your order!",
                 msgEmpty: "Your cart is empty!",
                 lblItemSize: "Size",
                 lblQty: "Qty",
                 lblDelete: "Remove",
+                whatsappHeader: "🛍️ *New Order from RUAJ* 🛍️\n\n*Items:*\n",
                 products: [
                     { id: 1, name: "Pro Compression T-Shirt" },
                     { id: 2, name: "Comfort Stretch Joggers" },
@@ -489,7 +492,6 @@
             }
         };
 
-        // تم توجيه الرابط ليعود ويبحث داخل مستودع sweet
         const baseProductsConfig = {
             1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"] },
             2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"] },
@@ -658,13 +660,31 @@
                 return;
             }
 
-            cart.forEach(cartItem => {
-                if (baseProductsConfig[cartItem.id]) {
-                    baseProductsConfig[cartItem.id].stock -= cartItem.quantity;
+            // تم وضع رقم هاتفكِ هنا بنجاح لفتح محادثتكِ مباشرة
+            const myPhoneNumber = "9647746855670"; 
+
+            let messageText = t.whatsappHeader;
+            let grandTotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                grandTotal += itemTotal;
+                messageText += `${index + 1}. *${item.name}*\n   - المقاس: ${item.size}\n   - الكمية: ${item.quantity}\n   - السعر: ${t.currency} ${itemTotal.toLocaleString()}\n\n`;
+                
+                if (baseProductsConfig[item.id]) {
+                    baseProductsConfig[item.id].stock -= item.quantity;
                 }
             });
 
+            messageText += `---------------------------\n`;
+            messageText += `💰 *الإجمالي الكلي:* ${t.currency} ${grandTotal.toLocaleString()}`;
+
+            const whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(messageText)}`;
+
             alert(t.msgSuccess);
+            
+            window.open(whatsappUrl, '_blank');
+
             cart = [];
             updateCartUI();
             toggleCart();
