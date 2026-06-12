@@ -24,7 +24,6 @@
             box-sizing: border-box;
         }
 
-        /* دعم الخطوط بناءً على الاتجاه */
         [dir="rtl"] * { font-family: 'Cairo', sans-serif; }
         [dir="ltr"] * { font-family: 'Poppins', sans-serif; }
 
@@ -34,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* الهيدر */
         header {
             background-color: rgba(22, 31, 48, 0.95);
             padding: 15px 5%;
@@ -63,7 +61,6 @@
             gap: 15px;
         }
 
-        /* قائمة اختيار اللغة */
         .lang-select {
             background-color: #1e293b;
             color: white;
@@ -102,7 +99,6 @@
         [dir="rtl"] .cart-count { right: -5px; }
         [dir="ltr"] .cart-count { left: -5px; }
 
-        /* البانر الرئيسي */
         .hero {
             height: 50vh;
             background: linear-gradient(rgba(11, 15, 25, 0.7), rgba(11, 15, 25, 0.9)), url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
@@ -129,7 +125,6 @@
             margin-bottom: 30px;
         }
 
-        /* شبكة المنتجات */
         .container {
             max-width: 1200px;
             margin: 50px auto;
@@ -187,21 +182,24 @@
         .stock-status {
             font-size: 13px;
             color: var(--text-gray);
+            margin-bottom: 12px;
+        }
+
+        .selector-group {
             margin-bottom: 15px;
         }
 
-        .size-selector { margin-bottom: 15px; }
-
-        .size-selector label {
+        .selector-group label {
             display: block;
             font-size: 12px;
             color: var(--text-gray);
             margin-bottom: 5px;
         }
 
-        .sizes {
+        .sizes, .colors {
             display: flex;
             gap: 8px;
+            flex-wrap: wrap;
         }
 
         .size-btn {
@@ -221,6 +219,23 @@
             font-weight: bold;
         }
 
+        /* تنسيق أزرار اختيار الألوان */
+        .color-btn {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 2px solid #334155;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .color-btn.active {
+            border-color: #ffffff;
+            transform: scale(1.2);
+            box-shadow: 0 0 8px var(--primary-color);
+        }
+
         .btn-add {
             width: 100%;
             background-color: var(--primary-color);
@@ -231,6 +246,7 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 5px;
         }
 
         .btn-add:disabled {
@@ -239,7 +255,6 @@
             cursor: not-allowed;
         }
 
-        /* سلة التسوق الجانبية */
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -356,7 +371,6 @@
 
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
-    <!-- الهيدر -->
     <header>
         <div class="logo">RUAJ<span>.</span></div>
         <div class="nav-controls">
@@ -373,19 +387,16 @@
         </div>
     </header>
 
-    <!-- البانر الرئيسي -->
     <section class="hero">
         <h1 id="lblHeroTitle">انطلق بقوة مع <span>RUAJ</span></h1>
         <p id="lblHeroDesc">ملابس رياضية مصممة بأحدث التقنيات لتمنحك الأداء العالي والراحة المطلقة أثناء التمارين.</p>
     </section>
 
-    <!-- قسم المنتجات -->
     <main class="container">
         <h2 class="section-title" id="lblSectionTitle">الأكثر مبيعاً</h2>
         <div class="products-grid" id="productsContainer"></div>
     </main>
 
-    <!-- نافذة السلة الجانبية -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3 id="lblCartHeader">سلة التسوق</h3>
@@ -413,17 +424,18 @@
                 totalText: "الإجمالي:",
                 checkoutBtn: "إتمام الطلب عبر الواتساب",
                 lblSize: "اختر المقاس:",
+                lblColor: "اختر اللون:",
                 lblStock: "المتبقي في المخزن:",
                 btnAdd: "إضافة للسلة",
                 btnOut: "نفدت الكمية",
                 currency: "COP$",
-                msgMax: "عذراً، لقد وصلت للحد الأقصى المتاح في المخزن لهذا المقاس.",
+                msgMax: "عذراً، لقد وصلت للحد الأقصى المتاح في المخزن لهذا المقاس واللون.",
                 msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
                 msgEmpty: "السلة فارغة حالياً!",
                 lblItemSize: "Talla",
+                lblItemColor: "Color",
                 lblQty: "Cant",
                 lblDelete: "حذف",
-                // تم تعديل الرسالة للغة الكولومبية هنا لتذهب للعميل جاهزة بالإسبانية
                 whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
                 lblTotalMsg: "Total a pagar:",
                 products: [
@@ -444,14 +456,16 @@
                 totalText: "Total:",
                 checkoutBtn: "Pedir por WhatsApp",
                 lblSize: "Seleccionar Talla:",
+                lblColor: "Seleccionar Color:",
                 lblStock: "Disponibles en stock:",
                 btnAdd: "Añadir al carrito",
                 btnOut: "Agotado",
                 currency: "COP$",
-                msgMax: "Lo sentimos, has alcanzado el límite máximo disponible en stock para esta talla.",
+                msgMax: "Lo sentimos, has alcanzado el límite máximo disponible en stock para esta talla y color.",
                 msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
                 msgEmpty: "¡El carrito está vacío!",
                 lblItemSize: "Talla",
+                lblItemColor: "Color",
                 lblQty: "Cant",
                 lblDelete: "Eliminar",
                 whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
@@ -474,14 +488,16 @@
                 totalText: "Total:",
                 checkoutBtn: "Order via WhatsApp",
                 lblSize: "Select Size:",
+                lblColor: "Select Color:",
                 lblStock: "In Stock:",
                 btnAdd: "Add to Cart",
                 btnOut: "Out of Stock",
                 currency: "COP$",
-                msgMax: "Sorry, you have reached the maximum stock limit for this size.",
+                msgMax: "Sorry, you have reached the maximum stock limit for this size and color.",
                 msgSuccess: "Redirecting to WhatsApp to send your order!",
                 msgEmpty: "Your cart is empty!",
                 lblItemSize: "Size",
+                lblItemColor: "Color",
                 lblQty: "Qty",
                 lblDelete: "Remove",
                 whatsappHeader: "🛍️ *New Order from RUAJ Store* 🛍️\n\n*Items:*\n",
@@ -496,17 +512,34 @@
             }
         };
 
-        const baseProductsConfig = {
-            1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"] },
-            2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"] },
-            3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"] },
-            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"] },
-            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/pants3.jpeg.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"] }
+        // المخزون الافتراضي الأساسي مضاف إليه الألوان للتجربة
+        const defaultProductsConfig = {
+            1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"], colors: [{nameAr: "أسود", nameEs: "Negro", hex: "#000000"}, {nameAr: "أزرق", nameEs: "Azul", hex: "#0000ff"}] },
+            2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"], colors: [{nameAr: "رمادي", nameEs: "Gris", hex: "#808080"}, {nameAr: "أسود", nameEs: "Negro", hex: "#000000"}] },
+            3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"], colors: [{nameAr: "أحمر", nameEs: "Rojo", hex: "#ff0000"}, {nameAr: "أخضر زيتوني", nameEs: "Verde Oliva", hex: "#556b2f"}] },
+            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"], colors: [{nameAr: "أحمر ناري", nameEs: "Rojo", hex: "#e60000"}, {nameAr: "أبيض", nameEs: "Blanco", hex: "#ffffff"}] },
+            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/pants3.jpeg.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"], colors: [{nameAr: "رمادي غامق", nameEs: "Gris Oscuro", hex: "#343a40"}] }
         };
 
+        function loadInventory() {
+            const savedInventory = localStorage.getItem('ruaj_inventory');
+            if (savedInventory) {
+                return JSON.parse(savedInventory);
+            } else {
+                localStorage.setItem('ruaj_inventory', JSON.stringify(defaultProductsConfig));
+                return defaultProductsConfig;
+            }
+        }
+
+        function saveInventory(config) {
+            localStorage.setItem('ruaj_inventory', JSON.stringify(config));
+        }
+
+        let baseProductsConfig = loadInventory();
         let currentLang = 'ar';
         let cart = [];
         let selectedSizes = {};
+        let selectedColors = {}; // كائن لحفظ الألوان المحددة لكل منتج
 
         function changeLanguage(lang) {
             currentLang = lang;
@@ -529,6 +562,7 @@
         }
 
         function getCurrentProducts() {
+            baseProductsConfig = loadInventory();
             return translations[currentLang].products.map(p => {
                 return {
                     ...p,
@@ -544,8 +578,12 @@
             const t = translations[currentLang];
 
             currentProducts.forEach(product => {
+                // ضبط القيم الافتراضية إذا لم يتم اختيارها بعد
                 if (!selectedSizes[product.id]) {
                     selectedSizes[product.id] = product.sizes[0];
+                }
+                if (!selectedColors[product.id] && product.colors && product.colors.length > 0) {
+                    selectedColors[product.id] = product.colors[0];
                 }
 
                 const isOutOfStock = product.stock === 0;
@@ -559,13 +597,28 @@
                         <div class="product-price">${t.currency} ${product.price.toLocaleString()}</div>
                         <div class="stock-status">${t.lblStock} ${product.stock}</div>
                         
-                        <div class="size-selector">
+                        <!-- اختيار المقاس -->
+                        <div class="selector-group">
                             <label>${t.lblSize}</label>
                             <div class="sizes">
                                 ${product.sizes.map(size => `
                                     <button class="size-btn ${selectedSizes[product.id] === size ? 'active' : ''}" 
                                         onclick="selectSize(${product.id}, '${size}')">
                                         ${size}
+                                    </button>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- اختيار اللون -->
+                        <div class="selector-group">
+                            <label>${t.lblColor}</label>
+                            <div class="colors">
+                                ${product.colors.map((color, index) => `
+                                    <button class="color-btn ${selectedColors[product.id]?.hex === color.hex ? 'active' : ''}" 
+                                        style="background-color: ${color.hex};" 
+                                        title="${currentLang === 'ar' ? color.nameAr : color.nameEs}"
+                                        onclick="selectColor(${product.id}, ${index})">
                                     </button>
                                 `).join('')}
                             </div>
@@ -585,6 +638,15 @@
             displayProducts();
         }
 
+        function selectColor(productId, colorIndex) {
+            const currentProducts = getCurrentProducts();
+            const product = currentProducts.find(p => p.id === productId);
+            if (product && product.colors) {
+                selectedColors[productId] = product.colors[colorIndex];
+                displayProducts();
+            }
+        }
+
         function toggleCart() {
             document.getElementById('cartSidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
@@ -594,10 +656,12 @@
             const currentProducts = getCurrentProducts();
             const product = currentProducts.find(p => p.id === productId);
             const size = selectedSizes[productId];
+            const color = selectedColors[productId];
             const t = translations[currentLang];
 
             if (product && product.stock > 0) {
-                const existingItem = cart.find(item => item.id === productId && item.size === size);
+                // البحث في السلة إذا كان نفس المنتج ونفس المقاس ونفس اللون موجوداً بالفعل
+                const existingItem = cart.find(item => item.id === productId && item.size === size && item.color.hex === color.hex);
 
                 if (existingItem) {
                     if (existingItem.quantity < product.stock) {
@@ -613,6 +677,7 @@
                         price: product.price,
                         image: product.image,
                         size: size,
+                        color: color, // حفظ تفاصيل اللون المختار كاملة
                         quantity: 1
                     });
                 }
@@ -620,8 +685,8 @@
             }
         }
 
-        function removeFromCart(productId, size) {
-            cart = cart.filter(item => !(item.id === productId && item.size === size));
+        function removeFromCart(productId, size, colorHex) {
+            cart = cart.filter(item => !(item.id === productId && item.size === size && item.color.hex === colorHex));
             updateCartUI();
         }
 
@@ -639,16 +704,21 @@
                 total += item.price * item.quantity;
                 totalItems += item.quantity;
 
+                // اختيار اسم اللون المناسب حسب لغة التحكم في الواجهة حالياً
+                const colorNameDisplay = currentLang === 'ar' ? item.color.nameAr : item.color.nameEs;
+
                 const itemElement = document.createElement('div');
                 itemElement.className = 'cart-item';
                 itemElement.innerHTML = `
                     <img src="${item.image}" class="cart-item-img">
                     <div class="cart-item-info">
                         <div class="cart-item-title">${item.name}</div>
-                        <div class="cart-item-meta">${t.lblItemSize}: ${item.size} | ${t.lblQty}: ${item.quantity}</div>
+                        <div class="cart-item-meta">
+                            ${t.lblItemSize}: ${item.size} | ${t.lblItemColor}: ${colorNameDisplay} | ${t.lblQty}: ${item.quantity}
+                        </div>
                         <div class="cart-item-price">${t.currency} ${(item.price * item.quantity).toLocaleString()}</div>
                     </div>
-                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}')">${t.lblDelete}</button>
+                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}', '${item.color.hex}')">${t.lblDelete}</button>
                 `;
                 cartItemsContainer.appendChild(itemElement);
             });
@@ -664,22 +734,24 @@
                 return;
             }
 
-            // رقم هاتفك المعتمد
             const myPhoneNumber = "9647746855670"; 
 
             let messageText = t.whatsappHeader;
             let grandTotal = 0;
 
-            // بناء محتوى المنتجات المكتوبة كلياً بالإسبانية للعميل الكولومبي
             cart.forEach((item, index) => {
                 const itemTotal = item.price * item.quantity;
                 grandTotal += itemTotal;
-                messageText += `${index + 1}. *${item.name}*\n   - Talla (المقاس): ${item.size}\n   - Cantidad (الكمية): ${item.quantity}\n   - Precio: ${t.currency} ${itemTotal.toLocaleString()}\n\n`;
+                
+                // يتم إرسال اسم اللون بالإسبانية دائماً للعميل الكولومبي بذكاء وثبات ليفهمه
+                messageText += `${index + 1}. *${item.name}*\n   - Talla (المقاس): ${item.size}\n   - Color (اللون): ${item.color.nameEs}\n   - Cantidad (الكمية): ${item.quantity}\n   - Precio: ${t.currency} ${itemTotal.toLocaleString()}\n\n`;
                 
                 if (baseProductsConfig[item.id]) {
                     baseProductsConfig[item.id].stock -= item.quantity;
                 }
             });
+
+            saveInventory(baseProductsConfig);
 
             messageText += `---------------------------\n`;
             messageText += `💰 *${t.lblTotalMsg}* ${t.currency} ${grandTotal.toLocaleString()}`;
@@ -693,7 +765,7 @@
             cart = [];
             updateCartUI();
             toggleCart();
-            displayProducts();
+            displayProducts(); 
         }
 
         changeLanguage('ar');
