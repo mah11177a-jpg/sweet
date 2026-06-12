@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlTag">
+<html lang="es-CO" dir="ltr" id="htmlTag">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=300;400;700;900&family=Poppins:wght=300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -22,10 +22,8 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-
-        [dir="rtl"] * { font-family: 'Cairo', sans-serif; }
-        [dir="ltr"] * { font-family: 'Poppins', sans-serif; }
 
         body {
             background-color: var(--bg-dark);
@@ -61,17 +59,6 @@
             gap: 15px;
         }
 
-        .lang-select {
-            background-color: #1e293b;
-            color: white;
-            border: 1px solid #334155;
-            padding: 8px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            outline: none;
-            font-weight: bold;
-        }
-
         .cart-icon-container {
             position: relative;
             cursor: pointer;
@@ -95,12 +82,11 @@
             position: absolute;
             top: -5px;
             font-weight: bold;
+            left: -5px;
         }
-        [dir="rtl"] .cart-count { right: -5px; }
-        [dir="ltr"] .cart-count { left: -5px; }
 
         .hero {
-            height: 50vh;
+            height: 55vh;
             background: linear-gradient(rgba(11, 15, 25, 0.7), rgba(11, 15, 25, 0.9)), url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') center/cover;
             display: flex;
             flex-direction: column;
@@ -113,10 +99,19 @@
         .hero h1 {
             font-size: 42px;
             font-weight: 900;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
         }
 
         .hero h1 span { color: var(--primary-color); }
+
+        .hero .subtitle {
+            font-size: 14px;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
 
         .hero p {
             color: var(--text-gray);
@@ -135,9 +130,8 @@
             font-size: 28px;
             margin-bottom: 30px;
             padding: 0 15px;
+            border-left: 5px solid var(--primary-color);
         }
-        [dir="rtl"] .section-title { border-right: 5px solid var(--primary-color); }
-        [dir="ltr"] .section-title { border-left: 5px solid var(--primary-color); }
 
         .products-grid {
             display: grid;
@@ -219,7 +213,6 @@
             font-weight: bold;
         }
 
-        /* تنسيق أزرار اختيار الألوان */
         .color-btn {
             width: 25px;
             height: 25px;
@@ -266,12 +259,10 @@
             transition: all 0.4s ease;
             display: flex;
             flex-direction: column;
+            right: -400px;
         }
 
-        [dir="rtl"] .cart-sidebar { left: -400px; }
-        [dir="rtl"] .cart-sidebar.open { left: 0; }
-        [dir="ltr"] .cart-sidebar { right: -400px; }
-        [dir="ltr"] .cart-sidebar.open { right: 0; }
+        .cart-sidebar.open { right: 0; }
 
         .cart-header {
             padding: 20px;
@@ -361,9 +352,8 @@
         .overlay.active { display: block; }
 
         @media (max-width: 450px) {
-            .cart-sidebar { width: 100%; }
-            [dir="rtl"] .cart-sidebar { left: -100%; }
-            [dir="ltr"] .cart-sidebar { right: -100%; }
+            .cart-sidebar { width: 100%; right: -100%; }
+            .cart-sidebar.open { right: 0; }
         }
     </style>
 </head>
@@ -374,196 +364,110 @@
     <header>
         <div class="logo">RUAJ<span>.</span></div>
         <div class="nav-controls">
-            <select class="lang-select" id="langSelect" onchange="changeLanguage(this.value)">
-                <option value="ar">العربية</option>
-                <option value="es-CO">Español (Colombia)</option>
-                <option value="en">English</option>
-            </select>
-            
             <div class="cart-icon-container" onclick="toggleCart()">
-                <span id="lblCartBtn">🛒 السلة</span>
+                <span id="lblCartBtn">🛒 Carrito</span>
                 <span class="cart-count" id="cartCount">0</span>
             </div>
         </div>
     </header>
 
     <section class="hero">
-        <h1 id="lblHeroTitle">انطلق بقوة مع <span>RUAJ</span></h1>
-        <p id="lblHeroDesc">ملابس رياضية مصممة بأحدث التقنيات لتمنحك الأداء العالي والراحة المطلقة أثناء التمارين.</p>
+        <h1 id="lblHeroTitle">Entrena con poder con <span>RUAJ</span></h1>
+        <div class="subtitle">Desde 2018 bajo la gestión de Karina</div>
+        <p id="lblHeroDesc">Ropa deportiva diseñada con la última tecnología para brindarte un alto rendimiento y comodidad absoluta.</p>
     </section>
 
     <main class="container">
-        <h2 class="section-title" id="lblSectionTitle">الأكثر مبيعاً</h2>
+        <h2 class="section-title" id="lblSectionTitle">Los Más Vendidos</h2>
         <div class="products-grid" id="productsContainer"></div>
     </main>
 
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-            <h3 id="lblCartHeader">سلة التسوق</h3>
+            <h3 id="lblCartHeader">Tu Carrito</h3>
             <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
         <div class="cart-items" id="cartItemsContainer"></div>
         <div class="cart-footer">
             <div class="cart-total">
-                <span id="lblTotalText">الإجمالي:</span>
+                <span id="lblTotalText">Total:</span>
                 <span id="cartTotal">COP$ 0</span>
             </div>
-            <button class="btn-checkout" id="lblCheckoutBtn" onclick="checkout()">إتمام الطلب</button>
+            <button class="btn-checkout" id="lblCheckoutBtn" onclick="checkout()">Pedir por WhatsApp</button>
         </div>
     </div>
 
     <script>
-        const translations = {
-            ar: {
-                dir: "rtl",
-                heroTitle: "انطلق بقوة مع <span>RUAJ</span>",
-                heroDesc: "ملابس رياضية مصممة بأحدث التقنيات لتمنحك الأداء العالي والراحة المطلقة أثناء التمارين.",
-                sectionTitle: "الأكثر مبيعاً",
-                cartBtn: "🛒 السلة",
-                cartHeader: "سلة التسوق",
-                totalText: "الإجمالي:",
-                checkoutBtn: "إتمام الطلب عبر الواتساب",
-                lblSize: "اختر المقاس:",
-                lblColor: "اختر اللون:",
-                lblStock: "المتبقي في المخزن:",
-                btnAdd: "إضافة للسلة",
-                btnOut: "نفدت الكمية",
-                currency: "COP$",
-                msgMax: "عذراً، لقد وصلت للحد الأقصى المتاح في المخزن لهذا المقاس واللون.",
-                msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
-                msgEmpty: "السلة فارغة حالياً!",
-                lblItemSize: "Talla",
-                lblItemColor: "Color",
-                lblQty: "Cant",
-                lblDelete: "حذف",
-                whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
-                lblTotalMsg: "Total a pagar:",
-                products: [
-                    { id: 1, name: "Camiseta de Compresión Pro" },
-                    { id: 2, name: "Pantalón Deportivo Stretch" },
-                    { id: 3, name: "Chaqueta Rompevientos Deportiva" },
-                    { id: 4, name: "Tenis RUAJ Ultra Fitness" },
-                    { id: 5, name: "Pantalón Deportivo para Niños" }
-                ]
-            },
-            "es-CO": {
-                dir: "ltr",
-                heroTitle: "Entrena con poder con <span>RUAJ</span>",
-                heroDesc: "Ropa deportiva diseñada con la última tecnología para brindarte un alto rendimiento y comodidad absoluta.",
-                sectionTitle: "Los Más Vendidos",
-                cartBtn: "🛒 Carrito",
-                cartHeader: "Tu Carrito",
-                totalText: "Total:",
-                checkoutBtn: "Pedir por WhatsApp",
-                lblSize: "Seleccionar Talla:",
-                lblColor: "Seleccionar Color:",
-                lblStock: "Disponibles en stock:",
-                btnAdd: "Añadir al carrito",
-                btnOut: "Agotado",
-                currency: "COP$",
-                msgMax: "Lo sentimos, has alcanzado el límite máximo disponible en stock para esta talla y color.",
-                msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
-                msgEmpty: "¡El carrito está vacío!",
-                lblItemSize: "Talla",
-                lblItemColor: "Color",
-                lblQty: "Cant",
-                lblDelete: "Eliminar",
-                whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
-                lblTotalMsg: "Total a pagar:",
-                products: [
-                    { id: 1, name: "Camiseta de Compresión Pro" },
-                    { id: 2, name: "Pantalón Deportivo Stretch" },
-                    { id: 3, name: "Chaqueta Rompevientos Deportiva" },
-                    { id: 4, name: "Tenis RUAJ Ultra Fitness" },
-                    { id: 5, name: "Pantalón Deportivo para Niños" }
-                ]
-            },
-            en: {
-                dir: "ltr",
-                heroTitle: "Move with Power with <span>RUAJ</span>",
-                heroDesc: "Sportswear designed with the latest technology to give you high performance and absolute comfort.",
-                sectionTitle: "Best Sellers",
-                cartBtn: "🛒 Cart",
-                cartHeader: "Shopping Cart",
-                totalText: "Total:",
-                checkoutBtn: "Order via WhatsApp",
-                lblSize: "Select Size:",
-                lblColor: "Select Color:",
-                lblStock: "In Stock:",
-                btnAdd: "Add to Cart",
-                btnOut: "Out of Stock",
-                currency: "COP$",
-                msgMax: "Sorry, you have reached the maximum stock limit for this size and color.",
-                msgSuccess: "Redirecting to WhatsApp to send your order!",
-                msgEmpty: "Your cart is empty!",
-                lblItemSize: "Size",
-                lblItemColor: "Color",
-                lblQty: "Qty",
-                lblDelete: "Remove",
-                whatsappHeader: "🛍️ *New Order from RUAJ Store* 🛍️\n\n*Items:*\n",
-                lblTotalMsg: "Grand Total:",
-                products: [
-                    { id: 1, name: "Pro Compression T-Shirt" },
-                    { id: 2, name: "Comfort Stretch Joggers" },
-                    { id: 3, name: "Windproof Sports Jacket" },
-                    { id: 4, name: "RUAJ Ultra Fitness Shoes" },
-                    { id: 5, name: "Kids Sports Joggers" }
-                ]
-            }
+        // رابط قاعدة بيانات Firebase الخاصة بكِ
+        const FIREBASE_DB_URL = "https://sweet-store-5826f-default-rtdb.firebaseio.com/inventory.json";
+
+        const labels = {
+            lblSize: "Seleccionar Talla:",
+            lblColor: "Seleccionar Color:",
+            lblStock: "Disponibles en stock:",
+            btnAdd: "Añadir al carrito",
+            btnOut: "Agotado",
+            currency: "COP$",
+            msgMax: "Lo sentimos, has alcanzado el límite máximo disponible en stock para esta talla y color.",
+            msgSuccess: "¡Redirigiendo a WhatsApp para enviar tu pedido!",
+            msgEmpty: "¡El carrito está vacío!",
+            lblItemSize: "Talla",
+            lblItemColor: "Color",
+            lblQty: "Cant",
+            lblDelete: "Eliminar",
+            whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
+            lblTotalMsg: "Total a pagar:"
         };
 
-        // المخزون الافتراضي الأساسي مضاف إليه الألوان للتجربة
+        const productsNames = [
+            { id: 1, name: "Camiseta de Compresión Pro" },
+            { id: 2, name: "Pantalón Deportivo Stretch" },
+            { id: 3, name: "Chaqueta Rompevientos Deportiva" },
+            { id: 4, name: "Tenis RUAJ Ultra Fitness" },
+            { id: 5, name: "Pantalón Deportivo para Niños" }
+        ];
+
         const defaultProductsConfig = {
-            1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"], colors: [{nameAr: "أسود", nameEs: "Negro", hex: "#000000"}, {nameAr: "أزرق", nameEs: "Azul", hex: "#0000ff"}] },
-            2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"], colors: [{nameAr: "رمادي", nameEs: "Gris", hex: "#808080"}, {nameAr: "أسود", nameEs: "Negro", hex: "#000000"}] },
-            3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"], colors: [{nameAr: "أحمر", nameEs: "Rojo", hex: "#ff0000"}, {nameAr: "أخضر زيتوني", nameEs: "Verde Oliva", hex: "#556b2f"}] },
-            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"], colors: [{nameAr: "أحمر ناري", nameEs: "Rojo", hex: "#e60000"}, {nameAr: "أبيض", nameEs: "Blanco", hex: "#ffffff"}] },
-            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/pants3.jpeg.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"], colors: [{nameAr: "رمادي غامق", nameEs: "Gris Oscuro", hex: "#343a40"}] }
+            1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"], colors: [{nameEs: "Negro", hex: "#000000"}, {nameEs: "Azul", hex: "#0000ff"}] },
+            2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"], colors: [{nameEs: "Gris", hex: "#808080"}, {nameEs: "Negro", hex: "#000000"}] },
+            3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"], colors: [{nameEs: "Rojo", hex: "#ff0000"}, {nameEs: "Verde Oliva", hex: "#556b2f"}] },
+            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"], colors: [{nameEs: "Rojo", hex: "#e60000"}, {nameEs: "Blanco", hex: "#ffffff"}] },
+            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/pants3.jpeg.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"], colors: [{nameEs: "Gris Oscuro", hex: "#343a40"}] }
         };
 
-        function loadInventory() {
-            const savedInventory = localStorage.getItem('ruaj_inventory');
-            if (savedInventory) {
-                return JSON.parse(savedInventory);
-            } else {
-                localStorage.setItem('ruaj_inventory', JSON.stringify(defaultProductsConfig));
-                return defaultProductsConfig;
-            }
-        }
-
-        function saveInventory(config) {
-            localStorage.setItem('ruaj_inventory', JSON.stringify(config));
-        }
-
-        let baseProductsConfig = loadInventory();
-        let currentLang = 'ar';
+        let baseProductsConfig = defaultProductsConfig;
         let cart = [];
         let selectedSizes = {};
-        let selectedColors = {}; // كائن لحفظ الألوان المحددة لكل منتج
+        let selectedColors = {};
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            const htmlTag = document.getElementById('htmlTag');
-            htmlTag.setAttribute('dir', t.dir);
-            htmlTag.setAttribute('lang', lang);
+        async function fetchInventoryFromCloud() {
+            try {
+                const response = await fetch(FIREBASE_DB_URL);
+                const data = await response.json();
+                if (data) {
+                    baseProductsConfig = data;
+                } else {
+                    await saveInventoryToCloud(defaultProductsConfig);
+                }
+            } catch (error) {
+                console.error("Error fetching cloud data:", error);
+            }
+        }
 
-            document.getElementById('lblHeroTitle').innerHTML = t.heroTitle;
-            document.getElementById('lblHeroDesc').innerText = t.heroDesc;
-            document.getElementById('lblSectionTitle').innerText = t.sectionTitle;
-            document.getElementById('lblCartBtn').innerText = t.cartBtn;
-            document.getElementById('lblCartHeader').innerText = t.cartHeader;
-            document.getElementById('lblTotalText').innerText = t.totalText;
-            document.getElementById('lblCheckoutBtn').innerText = t.checkoutBtn;
-
-            displayProducts();
-            updateCartUI(); 
+        async function saveInventoryToCloud(config) {
+            try {
+                await fetch(FIREBASE_DB_URL, {
+                    method: 'PUT',
+                    body: JSON.stringify(config),
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            } catch (error) {
+                console.error("Error saving cloud data:", error);
+            }
         }
 
         function getCurrentProducts() {
-            baseProductsConfig = loadInventory();
-            return translations[currentLang].products.map(p => {
+            return productsNames.map(p => {
                 return {
                     ...p,
                     ...baseProductsConfig[p.id]
@@ -575,10 +479,8 @@
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
             const currentProducts = getCurrentProducts();
-            const t = translations[currentLang];
 
             currentProducts.forEach(product => {
-                // ضبط القيم الافتراضية إذا لم يتم اختيارها بعد
                 if (!selectedSizes[product.id]) {
                     selectedSizes[product.id] = product.sizes[0];
                 }
@@ -594,12 +496,11 @@
                     <img src="${product.image}" alt="${product.name}" class="product-img">
                     <div class="product-info">
                         <div class="product-title">${product.name}</div>
-                        <div class="product-price">${t.currency} ${product.price.toLocaleString()}</div>
-                        <div class="stock-status">${t.lblStock} ${product.stock}</div>
+                        <div class="product-price">${labels.currency} ${product.price.toLocaleString()}</div>
+                        <div class="stock-status">${labels.lblStock} ${product.stock}</div>
                         
-                        <!-- اختيار المقاس -->
                         <div class="selector-group">
-                            <label>${t.lblSize}</label>
+                            <label>${labels.lblSize}</label>
                             <div class="sizes">
                                 ${product.sizes.map(size => `
                                     <button class="size-btn ${selectedSizes[product.id] === size ? 'active' : ''}" 
@@ -610,14 +511,13 @@
                             </div>
                         </div>
 
-                        <!-- اختيار اللون -->
                         <div class="selector-group">
-                            <label>${t.lblColor}</label>
+                            <label>${labels.lblColor}</label>
                             <div class="colors">
                                 ${product.colors.map((color, index) => `
                                     <button class="color-btn ${selectedColors[product.id]?.hex === color.hex ? 'active' : ''}" 
                                         style="background-color: ${color.hex};" 
-                                        title="${currentLang === 'ar' ? color.nameAr : color.nameEs}"
+                                        title="${color.nameEs}"
                                         onclick="selectColor(${product.id}, ${index})">
                                     </button>
                                 `).join('')}
@@ -625,7 +525,7 @@
                         </div>
 
                         <button class="btn-add" ${isOutOfStock ? 'disabled' : ''} onclick="addToCart(${product.id})">
-                            ${isOutOfStock ? t.btnOut : t.btnAdd}
+                            ${isOutOfStock ? labels.btnOut : labels.btnAdd}
                         </button>
                     </div>
                 `;
@@ -657,17 +557,15 @@
             const product = currentProducts.find(p => p.id === productId);
             const size = selectedSizes[productId];
             const color = selectedColors[productId];
-            const t = translations[currentLang];
 
             if (product && product.stock > 0) {
-                // البحث في السلة إذا كان نفس المنتج ونفس المقاس ونفس اللون موجوداً بالفعل
                 const existingItem = cart.find(item => item.id === productId && item.size === size && item.color.hex === color.hex);
 
                 if (existingItem) {
                     if (existingItem.quantity < product.stock) {
                         existingItem.quantity++;
                     } else {
-                        alert(t.msgMax);
+                        alert(labels.msgMax);
                         return;
                     }
                 } else {
@@ -677,7 +575,7 @@
                         price: product.price,
                         image: product.image,
                         size: size,
-                        color: color, // حفظ تفاصيل اللون المختار كاملة
+                        color: color,
                         quantity: 1
                     });
                 }
@@ -694,7 +592,6 @@
             const cartItemsContainer = document.getElementById('cartItemsContainer');
             const cartCount = document.getElementById('cartCount');
             const cartTotal = document.getElementById('cartTotal');
-            const t = translations[currentLang];
 
             cartItemsContainer.innerHTML = '';
             let total = 0;
@@ -704,9 +601,6 @@
                 total += item.price * item.quantity;
                 totalItems += item.quantity;
 
-                // اختيار اسم اللون المناسب حسب لغة التحكم في الواجهة حالياً
-                const colorNameDisplay = currentLang === 'ar' ? item.color.nameAr : item.color.nameEs;
-
                 const itemElement = document.createElement('div');
                 itemElement.className = 'cart-item';
                 itemElement.innerHTML = `
@@ -714,51 +608,51 @@
                     <div class="cart-item-info">
                         <div class="cart-item-title">${item.name}</div>
                         <div class="cart-item-meta">
-                            ${t.lblItemSize}: ${item.size} | ${t.lblItemColor}: ${colorNameDisplay} | ${t.lblQty}: ${item.quantity}
+                            ${labels.lblItemSize}: ${item.size} | ${labels.lblItemColor}: ${item.color.nameEs} | ${labels.lblQty}: ${item.quantity}
                         </div>
-                        <div class="cart-item-price">${t.currency} ${(item.price * item.quantity).toLocaleString()}</div>
+                        <div class="cart-item-price">${labels.currency} ${(item.price * item.quantity).toLocaleString()}</div>
                     </div>
-                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}', '${item.color.hex}')">${t.lblDelete}</button>
+                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}', '${item.color.hex}')">${labels.lblDelete}</button>
                 `;
                 cartItemsContainer.appendChild(itemElement);
             });
 
             cartCount.innerText = totalItems;
-            cartTotal.innerText = `${t.currency} ${total.toLocaleString()}`;
+            cartTotal.innerText = `${labels.currency} ${total.toLocaleString()}`;
         }
 
-        function checkout() {
-            const t = translations[currentLang];
+        async function checkout() {
             if (cart.length === 0) {
-                alert(t.msgEmpty);
+                alert(labels.msgEmpty);
                 return;
             }
 
             const myPhoneNumber = "9647746855670"; 
 
-            let messageText = t.whatsappHeader;
+            let messageText = labels.whatsappHeader;
             let grandTotal = 0;
+
+            await fetchInventoryFromCloud();
 
             cart.forEach((item, index) => {
                 const itemTotal = item.price * item.quantity;
                 grandTotal += itemTotal;
                 
-                // يتم إرسال اسم اللون بالإسبانية دائماً للعميل الكولومبي بذكاء وثبات ليفهمه
-                messageText += `${index + 1}. *${item.name}*\n   - Talla (المقاس): ${item.size}\n   - Color (اللون): ${item.color.nameEs}\n   - Cantidad (الكمية): ${item.quantity}\n   - Precio: ${t.currency} ${itemTotal.toLocaleString()}\n\n`;
+                messageText += `${index + 1}. *${item.name}*\n   - Talla: ${item.size}\n   - Color: ${item.color.nameEs}\n   - Cantidad: ${item.quantity}\n   - Precio: ${labels.currency} ${itemTotal.toLocaleString()}\n\n`;
                 
                 if (baseProductsConfig[item.id]) {
-                    baseProductsConfig[item.id].stock -= item.quantity;
+                    baseProductsConfig[item.id].stock = Math.max(0, baseProductsConfig[item.id].stock - item.quantity);
                 }
             });
 
-            saveInventory(baseProductsConfig);
+            await saveInventoryToCloud(baseProductsConfig);
 
             messageText += `---------------------------\n`;
-            messageText += `💰 *${t.lblTotalMsg}* ${t.currency} ${grandTotal.toLocaleString()}`;
+            messageText += `💰 *${labels.lblTotalMsg}* ${labels.currency} ${grandTotal.toLocaleString()}`;
 
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(messageText)}`;
 
-            alert(t.msgSuccess);
+            alert(labels.msgSuccess);
             
             window.open(whatsappUrl, '_blank');
 
@@ -768,7 +662,19 @@
             displayProducts(); 
         }
 
-        changeLanguage('ar');
+        async function initApp() {
+            await fetchInventoryFromCloud();
+            displayProducts();
+            updateCartUI();
+            
+            setInterval(async () => {
+                await fetchInventoryFromCloud();
+                displayProducts();
+            }, 15000);
+        }
+
+        initApp();
     </script>
 </body>
+</html>
 </html>
