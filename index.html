@@ -16,6 +16,8 @@
             --card-bg: #161f30;      
             --text-light: #ffffff;
             --text-gray: #a0aec0;
+            --accent-color: #ffaa00;
+            --team-color: #00e5ff;
         }
 
         * {
@@ -122,8 +124,36 @@
 
         .container {
             max-width: 1200px;
-            margin: 50px auto;
+            margin: 30px auto 50px auto;
             padding: 0 20px;
+        }
+
+        .categories-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            padding: 0 10px;
+        }
+
+        .category-btn {
+            background: #1e293b;
+            color: white;
+            border: 1px solid #334155;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--primary-color);
+            color: #0b0f19;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0, 255, 102, 0.2);
         }
 
         .section-title {
@@ -144,11 +174,30 @@
             border-radius: 15px;
             overflow: hidden;
             transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 255, 102, 0.1);
+        }
+
+        /* تمييز كارت التطريز الخاص الفردي */
+        .product-card.custom-embroidery-card {
+            border: 2px dashed var(--accent-color);
+        }
+        .product-card.custom-embroidery-card:hover {
+            box-shadow: 0 10px 25px rgba(255, 170, 0, 0.2);
+        }
+
+        /* تمييز كارت التطريز الخاص بالفرق والمجموعات */
+        .product-card.team-embroidery-card {
+            border: 2px dashed var(--team-color);
+        }
+        .product-card.team-embroidery-card:hover {
+            box-shadow: 0 10px 25px rgba(0, 229, 255, 0.2);
         }
 
         .product-img {
@@ -157,7 +206,7 @@
             object-fit: cover;
         }
 
-        .product-info { padding: 20px; }
+        .product-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;}
 
         .product-title {
             font-size: 18px;
@@ -172,6 +221,9 @@
             font-weight: bold;
             margin-bottom: 15px;
         }
+        
+        .product-price.embroidery-price { color: var(--accent-color); }
+        .product-price.team-price { color: var(--team-color); }
 
         .stock-status {
             font-size: 13px;
@@ -188,6 +240,29 @@
             font-size: 12px;
             color: var(--text-gray);
             margin-bottom: 5px;
+        }
+
+        .custom-input-text {
+            width: 100%;
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-top: 5px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .custom-input-text:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(255, 170, 0, 0.3);
+        }
+
+        /* حقل إدخال مخصص للفرق ليتغير لونه */
+        .custom-input-text.team-input:focus {
+            border-color: var(--team-color);
+            box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
         }
 
         .sizes, .colors {
@@ -239,8 +314,11 @@
             font-weight: bold;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 5px;
+            margin-top: auto;
         }
+
+        .btn-add.btn-embroidery { background-color: var(--accent-color); color: #0b0f19; }
+        .btn-add.btn-team { background-color: var(--team-color); color: #0b0f19; }
 
         .btn-add:disabled {
             background-color: #334155;
@@ -377,8 +455,16 @@
         <p id="lblHeroDesc">Ropa deportiva diseñada con la última tecnología para brindarte un alto rendimiento y comodidad absoluta.</p>
     </section>
 
+    <div class="categories-container">
+        <button class="category-btn active" onclick="filterCategory('todos', this)">Todos</button>
+        <button class="category-btn" onclick="filterCategory('chaquetas', this)">Chaquetas y Conjuntos</button>
+        <button class="category-btn" onclick="filterCategory('shorts', this)">Shorts</button>
+        <button class="category-btn" onclick="filterCategory('camisetas', this)">Camisetas y Buzos</button>
+        <button class="category-btn" onclick="filterCategory('pantalones', this)">Pantalones</button>
+    </div>
+
     <main class="container">
-        <h2 class="section-title" id="lblSectionTitle">Los Más Vendidos</h2>
+        <h2 class="section-title" id="lblSectionTitle">Nuestros Productos</h2>
         <div class="products-grid" id="productsContainer"></div>
     </main>
 
@@ -398,7 +484,6 @@
     </div>
 
     <script>
-        // رابط قاعدة بيانات Firebase الخاصة بكِ
         const FIREBASE_DB_URL = "https://sweet-store-5826f-default-rtdb.firebaseio.com/inventory.json";
 
         const labels = {
@@ -416,29 +501,50 @@
             lblQty: "Cant",
             lblDelete: "Eliminar",
             whatsappHeader: "🛍️ *Nuevo Pedido - RUAJ Store* 🛍️\n\n*Productos solicitados:*\n",
-            lblTotalMsg: "Total a pagar:"
+            lblTotalMsg: "Total a pagar:",
+            
+            // نصوص ميزة التطريز الفردي والفرق
+            lblEmbroideryTitle: "Bordado Personalizado (Individual)",
+            lblEmbroideryDesc: "Texto o nombre que deseas bordar en tu prenda:",
+            lblEmbroideryPlaceholder: "Ej: RUAJ 2026 / Tu Nombre...",
+            msgEmbroideryEmpty: "¡Por favor, escribe el texto que deseas bordar antes de añadir al carrito!",
+            
+            lblTeamTitle: "Bordado para Equipos (Al por mayor)",
+            lblTeamQtyDesc: "Cantidad de uniformes/prendas para el equipo:",
+            lblTeamDetailsDesc: "Detalles del equipo (Nombres, logos, colores):",
+            lblTeamPlaceholder: "Ej: 12 camisetas con logo 'Titanes FC' en el pecho y números atrás...",
+            msgTeamQtyError: "¡Por favor, ingresa una cantidad válida de prendas (Mínimo 1)!"
         };
 
         const productsNames = [
-            { id: 1, name: "Camiseta de Compresión Pro" },
-            { id: 2, name: "Pantalón Deportivo Stretch" },
-            { id: 3, name: "Chaqueta Rompevientos Deportiva" },
-            { id: 4, name: "Tenis RUAJ Ultra Fitness" },
-            { id: 5, name: "Pantalón Deportivo para Niños" }
+            { id: 1, name: "Camiseta de Compresión Pro", category: "camisetas" },
+            { id: 2, name: "Pantalón Deportivo Stretch", category: "pantalones" },
+            { id: 3, name: "Chaqueta Rompevientos Deportiva", category: "chaquetas" },
+            { id: 4, name: "Short RUAJ Performance Trail", category: "shorts" },
+            { id: 5, name: "Pantalón Deportivo para Niños", category: "pantalones" },
+            { id: 6, name: "Buzo Hoodie Training Pro", category: "camisetas" },
+            { id: 7, name: "Conjunto Sudadera Sport Impermeable", category: "chaquetas" },
+            { id: 8, name: "Short de Compresión PowerLifting", category: "shorts" },
+            { id: 9, name: "Pantalón Jogger Algodón Premium", category: "pantalones" }
         ];
 
         const defaultProductsConfig = {
             1: { price: 75000, image: "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"], colors: [{nameEs: "Negro", hex: "#000000"}, {nameEs: "Azul", hex: "#0000ff"}] },
             2: { price: 105000, image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"], colors: [{nameEs: "Gris", hex: "#808080"}, {nameEs: "Negro", hex: "#000000"}] },
             3: { price: 145000, image: "https://images.unsplash.com/photo-1544441893-675973e31985?auto=format&fit=crop&w=500&q=80", stock: 2, sizes: ["M", "L", "XXL"], colors: [{nameEs: "Rojo", hex: "#ff0000"}, {nameEs: "Verde Oliva", hex: "#556b2f"}] },
-            4: { price: 195000, image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["41", "42", "43", "44"], colors: [{nameEs: "Rojo", hex: "#e60000"}, {nameEs: "Blanco", hex: "#ffffff"}] },
-            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/pants3.jpeg.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"], colors: [{nameEs: "Gris Oscuro", hex: "#343a40"}] }
+            4: { price: 89000, image: "https://images.unsplash.com/photo-1539185441755-769473a23570?auto=format&fit=crop&w=500&q=80", stock: 6, sizes: ["S", "M", "L"], colors: [{nameEs: "Negro", hex: "#000000"}] },
+            5: { price: 15000, image: "https://mah11177a-jpg.github.io/sweet/pants3.jpeg.jpeg", stock: 8, sizes: ["2Y", "3Y", "4Y", "5Y"], colors: [{nameEs: "Gris Oscuro", hex: "#343a40"}] },
+            6: { price: 125000, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=500&q=80", stock: 4, sizes: ["M", "L", "XL"], colors: [{nameEs: "Gris", hex: "#808080"}, {nameEs: "Negro", hex: "#000000"}] },
+            7: { price: 210000, image: "https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=500&q=80", stock: 3, sizes: ["S", "M", "L"], colors: [{nameEs: "Azul Oscuro", hex: "#1d3557"}] },
+            8: { price: 68000, image: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=500&q=80", stock: 7, sizes: ["M", "L"], colors: [{nameEs: "Negro", hex: "#000000"}] },
+            9: { price: 95000, image: "https://images.unsplash.com/photo-1517438322307-e67111335449?auto=format&fit=crop&w=500&q=80", stock: 5, sizes: ["M", "L", "XL"], colors: [{nameEs: "Gris Claro", hex: "#d3d3d3"}] }
         };
 
         let baseProductsConfig = defaultProductsConfig;
         let cart = [];
         let selectedSizes = {};
         let selectedColors = {};
+        let currentFilter = 'todos';
 
         async function fetchInventoryFromCloud() {
             try {
@@ -475,10 +581,22 @@
             });
         }
 
+        function filterCategory(category, buttonElement) {
+            currentFilter = category;
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            buttonElement.classList.add('active');
+            displayProducts();
+        }
+
         function displayProducts() {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
-            const currentProducts = getCurrentProducts();
+            let currentProducts = getCurrentProducts();
+
+            if (currentFilter !== 'todos') {
+                currentProducts = currentProducts.filter(p => p.category === currentFilter);
+            }
 
             currentProducts.forEach(product => {
                 if (!selectedSizes[product.id]) {
@@ -531,6 +649,114 @@
                 `;
                 container.appendChild(card);
             });
+
+            // 1. بطاقة التطريز الفردي الثابتة
+            const embroideryCard = document.createElement('div');
+            embroideryCard.className = 'product-card custom-embroidery-card';
+            embroideryCard.innerHTML = `
+                <img src="https://images.unsplash.com/photo-1613521141495-b1a90e5743c3?auto=format&fit=crop&w=500&q=80" alt="Bordado Personalizado" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">${labels.lblEmbroideryTitle}</div>
+                    <div class="product-price embroidery-price">${labels.currency} 15,000</div>
+                    <div class="stock-status" style="color: var(--accent-color);">✨ Personalización Única</div>
+                    
+                    <div class="selector-group">
+                        <label>${labels.lblEmbroideryDesc}</label>
+                        <input type="text" id="txtEmbroidery" class="custom-input-text" placeholder="${labels.lblEmbroideryPlaceholder}">
+                    </div>
+
+                    <button class="btn-add btn-embroidery" onclick="addEmbroideryToCart()">
+                        🛒 ${labels.btnAdd}
+                    </button>
+                </div>
+            `;
+            container.appendChild(embroideryCard);
+
+            // 2. بطاقة التطريز الخاصة بالفرق والمجموعات الكبيرة الثابتة
+            const teamCard = document.createElement('div');
+            teamCard.className = 'product-card team-embroidery-card';
+            teamCard.innerHTML = `
+                <img src="https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=500&q=80" alt="Bordado para Equipos" class="product-img">
+                <div class="product-info">
+                    <div class="product-title">${labels.lblTeamTitle}</div>
+                    <div class="product-price team-price">${labels.currency} 12,000 <span style="font-size:11px; color:var(--text-gray);">/ por prenda</span></div>
+                    <div class="stock-status" style="color: var(--team-color);">👥 Especial para Grupos</div>
+                    
+                    <div class="selector-group">
+                        <label>${labels.lblTeamQtyDesc}</label>
+                        <input type="number" id="numTeamQty" class="custom-input-text team-input" value="10" min="1" style="width: 100px;">
+                    </div>
+
+                    <div class="selector-group">
+                        <label>${labels.lblTeamDetailsDesc}</label>
+                        <input type="text" id="txtTeamDetails" class="custom-input-text team-input" placeholder="${labels.lblTeamPlaceholder}">
+                    </div>
+
+                    <button class="btn-add btn-team" onclick="addTeamEmbroideryToCart()">
+                        🛒 ${labels.btnAdd}
+                    </button>
+                </div>
+            `;
+            container.appendChild(teamCard);
+        }
+
+        // إضافة التطريز الفردي للسلة
+        function addEmbroideryToCart() {
+            const txtInput = document.getElementById('txtEmbroidery');
+            const textValue = txtInput.value.trim();
+
+            if (textValue === "") {
+                alert(labels.msgEmbroideryEmpty);
+                return;
+            }
+
+            const uniqueId = "embroid_" + Date.now();
+
+            cart.push({
+                id: uniqueId,
+                name: `✨ Bordado Personalizado (Individual)`,
+                price: 15000,
+                image: "https://images.unsplash.com/photo-1613521141495-b1a90e5743c3?auto=format&fit=crop&w=500&q=80",
+                size: "N/A",
+                color: { nameEs: "Hilos Especiales", hex: "#fff" },
+                quantity: 1,
+                customText: textValue
+            });
+
+            txtInput.value = "";
+            updateCartUI();
+        }
+
+        // إضافة تطريز الفرق والمجموعات إلى السلة
+        function addTeamEmbroideryToCart() {
+            const qtyInput = document.getElementById('numTeamQty');
+            const detailsInput = document.getElementById('txtTeamDetails');
+            
+            const quantity = parseInt(qtyInput.value);
+            const detailsValue = detailsInput.value.trim() || "Diseño de equipo a convenir";
+
+            if (isNaN(quantity) || quantity < 1) {
+                alert(labels.msgTeamQtyError);
+                return;
+            }
+
+            const uniqueId = "team_" + Date.now();
+
+            cart.push({
+                id: uniqueId,
+                name: `👥 Bordado Especial (Para Equipo)`,
+                price: 12000, // سعر القطعة الواحدة في الجملة
+                image: "https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=500&q=80",
+                size: "Grupal",
+                color: { nameEs: "A Elección", hex: "#00e5ff" },
+                quantity: quantity, // عدد قطع الفريق الكامل
+                customText: detailsValue,
+                isTeamOrder: true
+            });
+
+            qtyInput.value = "10";
+            detailsInput.value = "";
+            updateCartUI();
         }
 
         function selectSize(productId, size) {
@@ -599,7 +825,10 @@
 
             cart.forEach(item => {
                 total += item.price * item.quantity;
-                totalItems += item.quantity;
+                totalItems += item.isTeamOrder ? 1 : item.quantity; // يضاف كطلب واحد في العدد الإجمالي للأيقونة
+
+                const highlightColor = item.isTeamOrder ? 'var(--team-color)' : 'var(--accent-color)';
+                const hasCustomText = item.customText ? `<br><span style="color: ${highlightColor}; font-size:12px;">📝 Detalle: "${item.customText}"</span>` : '';
 
                 const itemElement = document.createElement('div');
                 itemElement.className = 'cart-item';
@@ -609,10 +838,11 @@
                         <div class="cart-item-title">${item.name}</div>
                         <div class="cart-item-meta">
                             ${labels.lblItemSize}: ${item.size} | ${labels.lblItemColor}: ${item.color.nameEs} | ${labels.lblQty}: ${item.quantity}
+                            ${hasCustomText}
                         </div>
                         <div class="cart-item-price">${labels.currency} ${(item.price * item.quantity).toLocaleString()}</div>
                     </div>
-                    <button class="remove-item" onclick="removeFromCart(${item.id}, '${item.size}', '${item.color.hex}')">${labels.lblDelete}</button>
+                    <button class="remove-item" onclick="removeFromCart('${item.id}', '${item.size}', '${item.color.hex}')">${labels.lblDelete}</button>
                 `;
                 cartItemsContainer.appendChild(itemElement);
             });
@@ -628,7 +858,6 @@
             }
 
             const myPhoneNumber = "9647746855670"; 
-
             let messageText = labels.whatsappHeader;
             let grandTotal = 0;
 
@@ -638,9 +867,20 @@
                 const itemTotal = item.price * item.quantity;
                 grandTotal += itemTotal;
                 
-                messageText += `${index + 1}. *${item.name}*\n   - Talla: ${item.size}\n   - Color: ${item.color.nameEs}\n   - Cantidad: ${item.quantity}\n   - Precio: ${labels.currency} ${itemTotal.toLocaleString()}\n\n`;
+                let productDetails = `${index + 1}. *${item.name}*\n`;
+                if(item.customText) {
+                    productDetails += `   - 📝 DETALLES / ESPECIFICACIONES: "${item.customText}"\n`;
+                    productDetails += `   - Cantidad Total: ${item.quantity} prendas\n`;
+                } else {
+                    productDetails += `   - Talla: ${item.size}\n   - Color: ${item.color.nameEs}\n`;
+                    productDetails += `   - Cantidad: ${item.quantity}\n`;
+                }
+                productDetails += `   - Precio Subtotal: ${labels.currency} ${itemTotal.toLocaleString()}\n\n`;
                 
-                if (baseProductsConfig[item.id]) {
+                messageText += productDetails;
+                
+                // الخصم من المخزن للملابس العادية فقط
+                if (typeof item.id === 'number' && baseProductsConfig[item.id]) {
                     baseProductsConfig[item.id].stock = Math.max(0, baseProductsConfig[item.id].stock - item.quantity);
                 }
             });
@@ -653,7 +893,6 @@
             const whatsappUrl = `https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(messageText)}`;
 
             alert(labels.msgSuccess);
-            
             window.open(whatsappUrl, '_blank');
 
             cart = [];
